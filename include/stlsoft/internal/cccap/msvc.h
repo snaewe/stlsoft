@@ -4,14 +4,14 @@
  * Purpose:     Compiler feature discrimination for Visual C++.
  *
  * Created:     7th February 2003
- * Updated:     1st December 2008
+ * Updated:     4th March 2009
  *
  * Thanks:      To Cláudio Albuquerque for working on the
  *              Win64-compatibility.
  *
  * Home:        http://stlsoft.org/
  *
- * Copyright (c) 2003-2008, Matthew Wilson and Synesis Software
+ * Copyright (c) 2003-2009, Matthew Wilson and Synesis Software
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -64,8 +64,8 @@
 #ifndef STLSOFT_DOCUMENTATION_SKIP_SECTION
 # define STLSOFT_VER_H_STLSOFT_CCCAP_MSVC_MAJOR     3
 # define STLSOFT_VER_H_STLSOFT_CCCAP_MSVC_MINOR     19
-# define STLSOFT_VER_H_STLSOFT_CCCAP_MSVC_REVISION  4
-# define STLSOFT_VER_H_STLSOFT_CCCAP_MSVC_EDIT      106
+# define STLSOFT_VER_H_STLSOFT_CCCAP_MSVC_REVISION  5
+# define STLSOFT_VER_H_STLSOFT_CCCAP_MSVC_EDIT      107
 #endif /* !STLSOFT_DOCUMENTATION_SKIP_SECTION */
 
 /* /////////////////////////////////////////////////////////////////////////
@@ -246,7 +246,9 @@
 #  define STLSOFT_CF_EXCEPTION_SIGNATURE_SUPPORT
 # endif /* _MSC_VER */
 /* # define STLSOFT_CF_EXCEPTION_SPEC_EXPENSIVE */
-# define STLSOFT_CF_EXCEPTION_OPERATOR_NEW_THROWS_BAD_ALLOC
+# if _MSC_VER >= 1300
+#  define STLSOFT_CF_EXCEPTION_OPERATOR_NEW_THROWS_BAD_ALLOC
+# endif /* _MSC_VER */
 #endif /* _CPPUNWIND */
 
 #ifdef _CPPRTTI

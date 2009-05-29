@@ -2,7 +2,7 @@
 STLSoft - Changes
 
 ; Created:  29th March 2002
-; Updated:  26th February 2009
+; Updated:  6th March 2009
 
 ============================================================================
 
@@ -19,7 +19,39 @@ STLSoft - Changes
 
 ============================================================================
 
-Changes for 1.9.74 (13th February 2009)
+Changes for 1.9.76 (6th March 2009)
+
+Summary:
+========
+
+ * added swap() methods to memory_mapped_file classes in UNIXSTL and WinSTL
+ * corrected defect in VC++ detection of bad_alloc support (which only
+   affects VC++ 6 or earlier)
+
+Changes:
+========
+
+ STLSoft:
+ ========
+
+ ~ include/stlsoft/internal/cccap/msvc.h:
+    ~ corrected detection of bad_alloc support
+
+ UNIXSTL:
+ ========
+
+ ~ include/unixstl/filesystem/memory_mapped_file.hpp:
+    + added swap() method, and std::swap() overload
+
+ WinSTL:
+ =======
+
+ ~ include/winstl/filesystem/memory_mapped_file.hpp:
+    + added swap() method, and std::swap() overload
+
+============================================================================
+
+Changes for 1.9.75 (26th February 2009)
 
 Summary:
 ========

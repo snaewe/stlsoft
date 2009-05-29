@@ -2,9 +2,17 @@
 STLSoft - History
 
 ; Created:  29th March 2002
-; Updated:  26th February 2009
+; Updated:  6th March 2009
 
 ============================================================================
+
+
+6th March 2009 - 1.9.76 released
+--------------------------------
+
+ * added swap() methods to memory_mapped_file classes in UNIXSTL and WinSTL
+ * corrected defect in VC++ detection of bad_alloc support (which only
+   affects VC++ 6 or earlier)
 
 
 26th February 2009 - 1.9.75 released

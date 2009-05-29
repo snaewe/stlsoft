@@ -6,7 +6,7 @@
  *              types.
  *
  * Created:     15th January 2002
- * Updated:     25th February 2009
+ * Updated:     6th March 2009
  *
  * Home:        http://stlsoft.org/
  *
@@ -54,8 +54,8 @@
 #ifndef STLSOFT_DOCUMENTATION_SKIP_SECTION
 # define STLSOFT_VER_STLSOFT_H_STLSOFT_MAJOR    3
 # define STLSOFT_VER_STLSOFT_H_STLSOFT_MINOR    20
-# define STLSOFT_VER_STLSOFT_H_STLSOFT_REVISION 3
-# define STLSOFT_VER_STLSOFT_H_STLSOFT_EDIT     379
+# define STLSOFT_VER_STLSOFT_H_STLSOFT_REVISION 4
+# define STLSOFT_VER_STLSOFT_H_STLSOFT_EDIT     380
 #else /* ? STLSOFT_DOCUMENTATION_SKIP_SECTION */
 /* # include "./internal/doxygen_defs.h" */
 #endif /* !STLSOFT_DOCUMENTATION_SKIP_SECTION */
@@ -239,12 +239,13 @@
 # define _STLSOFT_VER_1_9_73    0x010949ff  /*!< Version 1.9.73 (5th Feb 2009) */
 # define _STLSOFT_VER_1_9_74    0x01094aff  /*!< Version 1.9.74 (6th Feb 2009) */
 # define _STLSOFT_VER_1_9_75    0x01094bff  /*!< Version 1.9.75 (24th Feb 2009) */
+# define _STLSOFT_VER_1_9_76    0x01094cff  /*!< Version 1.9.75 (6th Mar 2009) */
 #endif /* !STLSOFT_DOCUMENTATION_SKIP_SECTION */
 
 #define _STLSOFT_VER_MAJOR      1
 #define _STLSOFT_VER_MINOR      9
-#define _STLSOFT_VER_REVISION   74
-#define _STLSOFT_VER            _STLSOFT_VER_1_9_75
+#define _STLSOFT_VER_REVISION   76
+#define _STLSOFT_VER            _STLSOFT_VER_1_9_76
 
 /* /////////////////////////////////////////////////////////////////////////
  * Basic macros
@@ -606,7 +607,7 @@
 # elif (_MSC_VER == 1500)
 #  define STLSOFT_COMPILER_VERSION_STRING       "Visual C++ 9.0"
 # else /* ? _MSC_VER */
-#  error Currently only versions 5.0, 6.0, 7.0, 7.1 & 8.0 of the Visual C++ compiler are supported by the STLSoft libraries
+#  error Currently only versions 5.0, 6.0, 7.0, 7.1, 8.0 and 9.0 of the Visual C++ compiler are supported by the STLSoft libraries
 # endif /* _MSC_VER */
 
 #else /* ? compiler */

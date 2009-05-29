@@ -4,11 +4,11 @@
  * Purpose:     Memory mapped file class.
  *
  * Created:     15th December 1996
- * Updated:     1st October 2008
+ * Updated:     6th March 2009
  *
  * Home:        http://stlsoft.org/
  *
- * Copyright (c) 1996-2008, Matthew Wilson and Synesis Software
+ * Copyright (c) 1996-2009, Matthew Wilson and Synesis Software
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -49,9 +49,9 @@
 
 #ifndef STLSOFT_DOCUMENTATION_SKIP_SECTION
 # define UNIXSTL_VER_UNIXSTL_FILESYSTEM_HPP_MEMORY_MAPPED_FILE_MAJOR       4
-# define UNIXSTL_VER_UNIXSTL_FILESYSTEM_HPP_MEMORY_MAPPED_FILE_MINOR       3
-# define UNIXSTL_VER_UNIXSTL_FILESYSTEM_HPP_MEMORY_MAPPED_FILE_REVISION    5
-# define UNIXSTL_VER_UNIXSTL_FILESYSTEM_HPP_MEMORY_MAPPED_FILE_EDIT        86
+# define UNIXSTL_VER_UNIXSTL_FILESYSTEM_HPP_MEMORY_MAPPED_FILE_MINOR       4
+# define UNIXSTL_VER_UNIXSTL_FILESYSTEM_HPP_MEMORY_MAPPED_FILE_REVISION    1
+# define UNIXSTL_VER_UNIXSTL_FILESYSTEM_HPP_MEMORY_MAPPED_FILE_EDIT        87
 #endif /* !STLSOFT_DOCUMENTATION_SKIP_SECTION */
 
 /* /////////////////////////////////////////////////////////////////////////
@@ -141,12 +141,18 @@ public:
     typedef int                             error_type;
     /// \brief The offset type
     typedef off_t                           offset_type;
+    /// The boolean type
+    typedef us_bool_t                       bool_type;
 /// @}
 
 /// \name Implementation
 /// @{
 private:
-    void open_(char_type const* fileName, offset_type offset, size_type requestSize)
+    void open_(
+        char_type const*    fileName
+    ,   offset_type         offset
+    ,   size_type           requestSize
+    )
     {
         scoped_handle<int>  hfile(  traits_type::open(  fileName
                                                     ,   O_RDONLY
@@ -211,33 +217,51 @@ public:
     {
         open_(stlsoft_ns_qual(c_str_ptr)(fileName), 0, 0);
     }
-    memory_mapped_file( char_type const*    fileName
-                    ,   offset_type         offset
-                    ,   size_type           requestSize)
+    memory_mapped_file(
+		char_type const*    fileName
+    ,   offset_type         offset
+    ,   size_type           requestSize
+	)
         : m_cb(0)
         , m_memory(NULL)
     {
         open_(fileName, offset, requestSize);
     }
     template <ss_typename_param_k S>
-    memory_mapped_file( S const&            fileName
-                    ,   offset_type         offset
-                    ,   size_type           requestSize)
+    memory_mapped_file(
+		S const&    fileName
+    ,   offset_type	offset
+    ,   size_type   requestSize
+	)
         : m_cb(0)
         , m_memory(NULL)
     {
         open_(stlsoft_ns_qual(c_str_ptr)(fileName), offset, requestSize);
     }
+
+    /// Closes the view on the mapped file
     ~memory_mapped_file() stlsoft_throw_0()
     {
-#ifdef STLSOFT_CF_EXCEPTION_SUPPORT
-        UNIXSTL_ASSERT(NULL != m_memory || 0 == m_cb);
-#endif /* !STLSOFT_CF_EXCEPTION_SUPPORT */
+        UNIXSTL_ASSERT(is_valid());
 
         if(NULL != m_memory)
         {
             ::munmap(m_memory, static_cast<us_size_t>(m_cb));
         }
+    }
+
+    /// Swaps the state of this instance with another
+    void swap(class_type& rhs) stlsoft_throw_0()
+    {
+        UNIXSTL_ASSERT(is_valid());
+
+        std_swap(m_cb, rhs.m_cb);
+        std_swap(m_memory, rhs.m_memory);
+#ifndef STLSOFT_CF_EXCEPTION_SUPPORT
+        std_swap(m_lastError, rhs.m_lastError);
+#endif /* !STLSOFT_CF_EXCEPTION_SUPPORT */
+
+        UNIXSTL_ASSERT(is_valid());
     }
 /// @}
 
@@ -267,13 +291,28 @@ public:
 /// \name Implementation
 /// @{
 private:
-    void on_error_(char const* message, error_type error = errno)
+    void on_error_(
+        char const* message
+    ,   error_type  error = errno
+    )
     {
 #ifdef STLSOFT_CF_EXCEPTION_SUPPORT
         STLSOFT_THROW_X(unix_exception(message, error));
 #else /* ? STLSOFT_CF_EXCEPTION_SUPPORT */
         m_lastError = error;
 #endif /* STLSOFT_CF_EXCEPTION_SUPPORT */
+    }
+
+    bool_type is_valid() const
+    {
+#ifdef STLSOFT_CF_EXCEPTION_SUPPORT
+        if((NULL != m_memory) != (0 == m_cb))
+        {
+            return false;
+        }
+#endif /* !STLSOFT_CF_EXCEPTION_SUPPORT */
+
+        return true;
     }
 /// @}
 
@@ -313,6 +352,19 @@ private:
 } // namespace stlsoft
 # endif /* _STLSOFT_NO_NAMESPACE */
 #endif /* !_UNIXSTL_NO_NAMESPACE */
+
+namespace std
+{
+
+    void swap(
+        unixstl_ns_qual(memory_mapped_file)& lhs
+    ,   unixstl_ns_qual(memory_mapped_file)& rhs
+    )
+    {
+        lhs.swap(rhs);
+    }
+
+} /* namespace std */
 
 /* ////////////////////////////////////////////////////////////////////// */
 

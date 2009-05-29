@@ -4,9 +4,10 @@
  * Purpose:     Memory mapped file class.
  *
  * Created:     15th December 1996
- * Updated:     25th February 2009
+ * Updated:     6th March 2009
  *
- * Thanks to:   Pablo Aguilar for requesting multibyte / Unicode ambivalence.
+ * Thanks:      To Pablo Aguilar for requesting multibyte / wide string
+ *              ambivalence. To Joe Mariadassou for requesting swap().
  *
  * Home:        http://stlsoft.org/
  *
@@ -51,9 +52,9 @@
 
 #ifndef STLSOFT_DOCUMENTATION_SKIP_SECTION
 # define WINSTL_VER_WINSTL_FILESYSTEM_HPP_MEMORY_MAPPED_FILE_MAJOR     4
-# define WINSTL_VER_WINSTL_FILESYSTEM_HPP_MEMORY_MAPPED_FILE_MINOR     5
-# define WINSTL_VER_WINSTL_FILESYSTEM_HPP_MEMORY_MAPPED_FILE_REVISION  4
-# define WINSTL_VER_WINSTL_FILESYSTEM_HPP_MEMORY_MAPPED_FILE_EDIT      82
+# define WINSTL_VER_WINSTL_FILESYSTEM_HPP_MEMORY_MAPPED_FILE_MINOR     6
+# define WINSTL_VER_WINSTL_FILESYSTEM_HPP_MEMORY_MAPPED_FILE_REVISION  1
+# define WINSTL_VER_WINSTL_FILESYSTEM_HPP_MEMORY_MAPPED_FILE_EDIT      83
 #endif /* !STLSOFT_DOCUMENTATION_SKIP_SECTION */
 
 /* /////////////////////////////////////////////////////////////////////////
@@ -74,6 +75,9 @@
 #ifndef STLSOFT_INCL_STLSOFT_SHIMS_ACCESS_STRING_H_FWD
 # include <stlsoft/shims/access/string/fwd.h>
 #endif /* !STLSOFT_INCL_STLSOFT_SHIMS_ACCESS_STRING_H_FWD */
+#ifndef STLSOFT_INCL_STLSOFT_UTIL_HPP_STD_SWAP
+# include <stlsoft/util/std_swap.hpp>
+#endif /* !STLSOFT_INCL_STLSOFT_UTIL_HPP_STD_SWAP */
 
 #ifdef STLSOFT_UNITTEST
 # include <winstl/filesystem/file_path_buffer.hpp>
@@ -105,7 +109,7 @@ namespace winstl_project
  * Classes
  */
 
-/** \brief Facade over the Win32 memory mapped file API.
+/** Facade over the Win32 memory mapped file API.
  *
  * \ingroup group__library__filesystem
  */
@@ -114,20 +118,22 @@ class memory_mapped_file
 /// \name Member Types
 /// @{
 public:
-    /// \brief This type
+    /// This type
     typedef memory_mapped_file              class_type;
-    /// \brief The size type
+    /// The size type
 #ifdef STLSOFT_CF_64BIT_INT_SUPPORT
     typedef ws_uint64_t                     size_type;
 #else /* ? STLSOFT_CF_64BIT_INT_SUPPORT */
     typedef ws_uint32_t                     size_type;
 #endif /* STLSOFT_CF_64BIT_INT_SUPPORT */
-    /// \brief The error type
+    /// The error type
     typedef ws_dword_t                      error_type;
 #ifdef STLSOFT_CF_64BIT_INT_SUPPORT
-    /// \brief The offset type
+    /// The offset type
     typedef ws_uint64_t                     offset_type;
 #endif /* STLSOFT_CF_64BIT_INT_SUPPORT */
+    /// The boolean type
+    typedef ws_bool_t                       bool_type;
 /// @}
 
 /// \name Implementation
@@ -142,13 +148,13 @@ private:
     }
 #endif /* compiler */
 
-
-    void open_( ws_char_a_t const*  fileName
+    void open_(
+        ws_char_a_t const*  fileName
 #ifdef STLSOFT_CF_64BIT_INT_SUPPORT
-            ,   offset_type         offset
-            ,   ws_uint32_t         requestSize
+    ,   offset_type         offset
+    ,   ws_uint32_t         requestSize
 #endif /* STLSOFT_CF_64BIT_INT_SUPPORT */
-            )
+    )
     {
         scoped_handle<HANDLE>   hfile(  ::CreateFileA(  fileName
                                                     ,   GENERIC_READ
@@ -168,12 +174,13 @@ private:
 #endif /* STLSOFT_CF_64BIT_INT_SUPPORT */
     }
 
-    void open_( ws_char_w_t const*  fileName
+    void open_(
+        ws_char_w_t const*  fileName
 #ifdef STLSOFT_CF_64BIT_INT_SUPPORT
-            ,   offset_type         offset
-            ,   ws_uint32_t         requestSize
+    ,   offset_type         offset
+    ,   ws_uint32_t         requestSize
 #endif /* STLSOFT_CF_64BIT_INT_SUPPORT */
-            )
+    )
     {
         scoped_handle<HANDLE>   hfile(  ::CreateFileW(  fileName
                                                     ,   GENERIC_READ
@@ -193,11 +200,13 @@ private:
 #endif /* STLSOFT_CF_64BIT_INT_SUPPORT */
     }
 
+    void open_helper_(
+        HANDLE      hFile
 #ifdef STLSOFT_CF_64BIT_INT_SUPPORT
-    void open_helper_(HANDLE hFile, offset_type offset, ws_uint32_t requestSize)
-#else /* ? STLSOFT_CF_64BIT_INT_SUPPORT */
-    void open_helper_(HANDLE hFile)
+    ,   offset_type offset
+    ,   ws_uint32_t requestSize
 #endif /* STLSOFT_CF_64BIT_INT_SUPPORT */
+    )
     {
         if(INVALID_HANDLE_VALUE == hFile)
         {
@@ -320,9 +329,11 @@ public:
     /// \param requestSize The size of the portion of the file
     ///   to map into memory. If 0, all (of the remaining portion)
     ///   of the file is loaded
-    memory_mapped_file( ws_char_a_t const*  fileName
-                    ,   offset_type         offset
-                    ,   ws_uint32_t         requestSize)
+    memory_mapped_file(
+        ws_char_a_t const*  fileName
+    ,   offset_type         offset
+    ,   ws_uint32_t         requestSize
+    )
         : m_cb(0)
         , m_memory(NULL)
     {
@@ -337,9 +348,11 @@ public:
     /// \param requestSize The size of the portion of the file
     ///   to map into memory. If 0, all (of the remaining portion)
     ///   of the file is loaded
-    memory_mapped_file( ws_char_w_t const*  fileName
-                    ,   offset_type         offset
-                    ,   ws_uint32_t         requestSize)
+    memory_mapped_file(
+        ws_char_w_t const*  fileName
+    ,   offset_type         offset
+    ,   ws_uint32_t         requestSize
+    )
         : m_cb(0)
         , m_memory(NULL)
     {
@@ -355,9 +368,11 @@ public:
     ///   to map into memory. If 0, all (of the remaining portion)
     ///   of the file is loaded
     template <ss_typename_param_k S>
-    memory_mapped_file( S const&            fileName
-                    ,   offset_type         offset
-                    ,   ws_uint32_t         requestSize)
+    memory_mapped_file(
+        S const&    fileName
+    ,   offset_type offset
+    ,   ws_uint32_t requestSize
+    )
         : m_cb(0)
         , m_memory(NULL)
     {
@@ -365,35 +380,48 @@ public:
     }
 #endif /* STLSOFT_CF_64BIT_INT_SUPPORT */
 
+    /// Closes the view on the mapped file
     ~memory_mapped_file() stlsoft_throw_0()
     {
-#ifdef STLSOFT_CF_EXCEPTION_SUPPORT
-        WINSTL_ASSERT(NULL != m_memory || 0 == m_cb);
-#endif /* !STLSOFT_CF_EXCEPTION_SUPPORT */
+        WINSTL_ASSERT(is_valid());
 
         if(NULL != m_memory)
         {
             ::UnmapViewOfFile(m_memory);
         }
     }
+
+    /// Swaps the state of this instance with another
+    void swap(class_type& rhs) stlsoft_throw_0()
+    {
+        WINSTL_ASSERT(is_valid());
+
+        std_swap(m_cb, rhs.m_cb);
+        std_swap(m_memory, rhs.m_memory);
+#ifndef STLSOFT_CF_EXCEPTION_SUPPORT
+        std_swap(m_lastError, rhs.m_lastError);
+#endif /* !STLSOFT_CF_EXCEPTION_SUPPORT */
+
+        WINSTL_ASSERT(is_valid());
+    }
 /// @}
 
 /// \name Accessors
 /// @{
 public:
-    /// \brief Non-mutating (const) pointer to the start of the mapped
-    ///  region.
+    /// Non-mutating (const) pointer to the start of the mapped region
     void const* memory() const
     {
         return m_memory;
     }
-    /// \brief The number of bytes in the mapped region
+    /// The number of bytes in the mapped region
     size_type size() const
     {
         return m_cb;
     }
 
 #ifndef STLSOFT_CF_EXCEPTION_SUPPORT
+    /// The error associated with the attempted file operation
     error_type lastError() const
     {
         return m_lastError;
@@ -404,7 +432,10 @@ public:
 /// \name Implementation
 /// @{
 private:
-    void on_error_(char const* message, error_type error = ::GetLastError())
+    void on_error_(
+        char const* message
+    ,   error_type  error = ::GetLastError()
+    )
     {
 #ifdef STLSOFT_CF_EXCEPTION_SUPPORT
         // The exception policy is used because VC++ 5 has a cow when it is
@@ -419,6 +450,18 @@ private:
 
         m_lastError = error;
 #endif /* STLSOFT_CF_EXCEPTION_SUPPORT */
+    }
+
+    bool_type is_valid() const
+    {
+#ifdef STLSOFT_CF_EXCEPTION_SUPPORT
+        if((NULL != m_memory) != (0 == m_cb))
+        {
+            return false;
+        }
+#endif /* !STLSOFT_CF_EXCEPTION_SUPPORT */
+
+        return true;
     }
 /// @}
 
@@ -440,14 +483,17 @@ private:
 /// @}
 };
 
-////////////////////////////////////////////////////////////////////////////
-// Unit-testing
+/* /////////////////////////////////////////////////////////////////////////
+ * Unit-testing
+ */
 
 #ifdef STLSOFT_UNITTEST
 # include "./unittest/memory_mapped_file_unittest_.h"
 #endif /* STLSOFT_UNITTEST */
 
-/* ////////////////////////////////////////////////////////////////////// */
+/* /////////////////////////////////////////////////////////////////////////
+ * Namespace
+ */
 
 #ifndef _WINSTL_NO_NAMESPACE
 # if defined(_STLSOFT_NO_NAMESPACE) || \
@@ -458,6 +504,19 @@ private:
 } // namespace stlsoft
 # endif /* _STLSOFT_NO_NAMESPACE */
 #endif /* !_WINSTL_NO_NAMESPACE */
+
+namespace std
+{
+
+    void swap(
+        winstl_ns_qual(memory_mapped_file)& lhs
+    ,   winstl_ns_qual(memory_mapped_file)& rhs
+    )
+    {
+        lhs.swap(rhs);
+    }
+
+} /* namespace std */
 
 /* ////////////////////////////////////////////////////////////////////// */
 
