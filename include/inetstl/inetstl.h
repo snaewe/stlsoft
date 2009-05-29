@@ -5,11 +5,11 @@
  *              and platform discriminations, and definitions of types.
  *
  * Created:     24th April 2004
- * Updated:     22nd September 2008
+ * Updated:     1st May 2009
  *
  * Home:        http://stlsoft.org/
  *
- * Copyright (c) 2004-2008, Matthew Wilson and Synesis Software
+ * Copyright (c) 2004-2009, Matthew Wilson and Synesis Software
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -46,9 +46,9 @@
 /* File version */
 #ifndef STLSOFT_DOCUMENTATION_SKIP_SECTION
 # define INETSTL_VER_INETSTL_H_INETSTL_MAJOR    3
-# define INETSTL_VER_INETSTL_H_INETSTL_MINOR    4
-# define INETSTL_VER_INETSTL_H_INETSTL_REVISION 2
-# define INETSTL_VER_INETSTL_H_INETSTL_EDIT     46
+# define INETSTL_VER_INETSTL_H_INETSTL_MINOR    5
+# define INETSTL_VER_INETSTL_H_INETSTL_REVISION 1
+# define INETSTL_VER_INETSTL_H_INETSTL_EDIT     47
 #endif /* !STLSOFT_DOCUMENTATION_SKIP_SECTION */
 
 /** \file inetstl/inetstl.h \brief [C, C++] The root header for the \ref group__project__inetstl "InetSTL" project. */
@@ -113,12 +113,13 @@
 # define _INETSTL_VER_1_2_1      0x00010201  /*!< Version 1.2.1 (with STLSoft 1.9.1) */
 # define _INETSTL_VER_1_2_2      0x00010202  /*!< Version 1.2.2 (with STLSoft 1.9.25) */
 # define _INETSTL_VER_1_2_3      0x010203ff  /*!< Version 1.2.3 (with STLSoft 1.9.46) */
+# define _INETSTL_VER_1_3_1      0x00010301  /*!< Version 1.3.1 (with STLSoft 1.9.79) */
 #endif /* !STLSOFT_DOCUMENTATION_SKIP_SECTION */
 
 #define _INETSTL_VER_MAJOR       1
-#define _INETSTL_VER_MINOR       2
-#define _INETSTL_VER_REVISION    3
-#define _INETSTL_VER             _INETSTL_VER_1_2_3
+#define _INETSTL_VER_MINOR       3
+#define _INETSTL_VER_REVISION    1
+#define _INETSTL_VER             _INETSTL_VER_1_3_1
 
 /* /////////////////////////////////////////////////////////////////////////
  * Includes
@@ -139,35 +140,36 @@
 # include <stlsoft/stlsoft.h>
 #endif /* !STLSOFT_INCL_STLSOFT_H_STLSOFT */
 
-#ifndef STLSOFT_INCL_H_WINDOWS
-# define STLSOFT_INCL_H_WINDOWS
-# include <windows.h>
-#endif /* !STLSOFT_INCL_H_WINDOWS */
-#ifndef STLSOFT_INCL_H_WININET
-# define STLSOFT_INCL_H_WININET
-# include <wininet.h>
-#endif /* !STLSOFT_INCL_H_WININET */
+#if defined(WIN32) || \
+    defined(WIN64)
+
+# define INETSTL_OS_IS_WINDOWS
+
+# ifndef STLSOFT_INCL_H_WINDOWS
+#  define STLSOFT_INCL_H_WINDOWS
+#  include <windows.h>
+# endif /* !STLSOFT_INCL_H_WINDOWS */
+# ifndef STLSOFT_INCL_H_WININET
+#  define STLSOFT_INCL_H_WININET
+#  include <wininet.h>
+# endif /* !STLSOFT_INCL_H_WININET */
+
+#else /* ? OS */
+
+#endif /* OS */
+
 
 /* /////////////////////////////////////////////////////////////////////////
  * STLSoft version compatibility
  */
 
-#if !defined(_STLSOFT_VER_1_9_1_B41) || \
-    _STLSOFT_VER < _STLSOFT_VER_1_9_1_B41
-# error This version of the InetSTL libraries requires STLSoft version 1.9.1 beta 41, or later
+#if _STLSOFT_VER < 0x01094eff
+# error This version of the InetSTL libraries requires STLSoft version 1.9.78, or later
 #endif /* _STLSOFT_VER */
 
 /* /////////////////////////////////////////////////////////////////////////
  * Sanity checks
- *
- * Win32    -   must be compiled in context of Win32 API
  */
-
-/* Must be Win32 api. */
-#if !defined(WIN32) && \
-    !defined(_WIN32)
-# error The InetSTL libraries is currently only compatible with the Win32 API
-#endif /* !WIN32 && !_WIN32 */
 
 /* /////////////////////////////////////////////////////////////////////////
  * Compiler compatibility
@@ -450,7 +452,9 @@ typedef stlsoft_ns_qual(ss_byte_t)          is_byte_t;      /*!< byte type */
 #ifdef __cplusplus
 typedef stlsoft_ns_qual(ss_bool_t)          is_bool_t;      /*!< Boolean type */
 #endif /* __cplusplus */
+# ifdef INETSTL_OS_IS_WINDOWS
 typedef DWORD                               is_dword_t;     /*!< dword */
+# endif /* INETSTL_OS_IS_WINDOWS */
 typedef stlsoft_ns_qual(ss_size_t)          is_size_t;      /*!< size */
 typedef stlsoft_ns_qual(ss_ptrdiff_t)       is_ptrdiff_t;   /*!< ptr diff */
 typedef stlsoft_ns_qual(ss_streampos_t)     is_streampos_t; /*!< streampos */
@@ -480,7 +484,9 @@ typedef is_uint_t           uint_t;             /*!< unsigned integer */
 typedef is_long_t           long_t;             /*!< long integer */
 typedef is_byte_t           byte_t;             /*!< byte type */
 typedef is_bool_t           bool_t;             /*!< Boolean type */
+# ifdef INETSTL_OS_IS_WINDOWS
 typedef is_dword_t          dword_t;            /*!< dword */
+# endif /* INETSTL_OS_IS_WINDOWS */
 # if !defined(STLSOFT_COMPILER_IS_DMC)
 typedef is_streampos_t      streampos_t;        /*!< streampos */
 typedef is_streamoff_t      streamoff_t;        /*!< streamoff */

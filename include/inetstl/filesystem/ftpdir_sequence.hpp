@@ -5,11 +5,11 @@
  *              and Unicode specialisations thereof.
  *
  * Created:     18th January 2006
- * Updated:     1st October 2008
+ * Updated:     1st May 2009
  *
  * Home:        http://stlsoft.org/
  *
- * Copyright (c) 2006-2008, Matthew Wilson and Synesis Software
+ * Copyright (c) 2006-2009, Matthew Wilson and Synesis Software
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -52,8 +52,8 @@
 #ifndef STLSOFT_DOCUMENTATION_SKIP_SECTION
 # define INETSTL_VER_INETSTL_FILESYSTEM_HPP_FTPDIR_SEQUENCE_MAJOR      2
 # define INETSTL_VER_INETSTL_FILESYSTEM_HPP_FTPDIR_SEQUENCE_MINOR      1
-# define INETSTL_VER_INETSTL_FILESYSTEM_HPP_FTPDIR_SEQUENCE_REVISION   2
-# define INETSTL_VER_INETSTL_FILESYSTEM_HPP_FTPDIR_SEQUENCE_EDIT       25
+# define INETSTL_VER_INETSTL_FILESYSTEM_HPP_FTPDIR_SEQUENCE_REVISION   3
+# define INETSTL_VER_INETSTL_FILESYSTEM_HPP_FTPDIR_SEQUENCE_EDIT       26
 #endif /* !STLSOFT_DOCUMENTATION_SKIP_SECTION */
 
 /* /////////////////////////////////////////////////////////////////////////
@@ -73,6 +73,9 @@ STLSOFT_COMPILER_IS_MSVC: _MSC_VER<1100
 #ifndef INETSTL_INCL_INETSTL_H_INETSTL
 # include <inetstl/inetstl.h>
 #endif /* !INETSTL_INCL_INETSTL_H_INETSTL */
+#ifndef INETSTL_OS_IS_WINDOWS
+# error This file is currently compatible only with the Win32/Win64 API
+#endif /* !INETSTL_OS_IS_WINDOWS */
 #ifndef INETSTL_INCL_INETSTL_FILESYSTEM_HPP_FILESYSTEM_TRAITS
 # include <inetstl/filesystem/filesystem_traits.hpp>
 #endif /* !INETSTL_INCL_INETSTL_FILESYSTEM_HPP_FILESYSTEM_TRAITS */

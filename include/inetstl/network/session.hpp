@@ -4,11 +4,11 @@
  * Purpose:     Contains the basic_session class.
  *
  * Created:     30th April 1999
- * Updated:     6th November 2007
+ * Updated:     1st May 2009
  *
  * Home:        http://stlsoft.org/
  *
- * Copyright (c) 1999-2007, Matthew Wilson and Synesis Software
+ * Copyright (c) 1999-2009, Matthew Wilson and Synesis Software
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -51,8 +51,8 @@
 #ifndef STLSOFT_DOCUMENTATION_SKIP_SECTION
 # define INETSTL_VER_INETSTL_NETWORK_HPP_SESSION_MAJOR      5
 # define INETSTL_VER_INETSTL_NETWORK_HPP_SESSION_MINOR      1
-# define INETSTL_VER_INETSTL_NETWORK_HPP_SESSION_REVISION   2
-# define INETSTL_VER_INETSTL_NETWORK_HPP_SESSION_EDIT       59
+# define INETSTL_VER_INETSTL_NETWORK_HPP_SESSION_REVISION   3
+# define INETSTL_VER_INETSTL_NETWORK_HPP_SESSION_EDIT       60
 #endif /* !STLSOFT_DOCUMENTATION_SKIP_SECTION */
 
 /* /////////////////////////////////////////////////////////////////////////
@@ -62,6 +62,9 @@
 #ifndef INETSTL_INCL_INETSTL_H_INETSTL
 # include <inetstl/inetstl.h>
 #endif /* !INETSTL_INCL_INETSTL_H_INETSTL */
+#ifndef INETSTL_OS_IS_WINDOWS
+# error This file is currently compatible only with the Win32/Win64 API
+#endif /* !INETSTL_OS_IS_WINDOWS */
 #ifndef INETSTL_INCL_INETSTL_FILESYSTEM_HPP_FILESYSTEM_TRAITS
 # include <inetstl/filesystem/filesystem_traits.hpp>
 #endif /* !INETSTL_INCL_INETSTL_FILESYSTEM_HPP_FILESYSTEM_TRAITS */

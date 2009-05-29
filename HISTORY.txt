@@ -2,12 +2,19 @@
 STLSoft - History
 
 ; Created:  29th March 2002
-; Updated:  27th April 2009
+; Updated:  2nd May 2009
 
 ============================================================================
 
 
-27th March 2009 - 1.9.78 released
+2nd May 2009 - 1.9.79 released
+------------------------------
+
+ * UNIX compatibility for InetSTL
+ * "safe string" library compatibility for InetSTL
+
+
+27th April 2009 - 1.9.78 released
 ---------------------------------
 
  * fixed serious defect in atlstl::copy_enumerator_impl::Reset()

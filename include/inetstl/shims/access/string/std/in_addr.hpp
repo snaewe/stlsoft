@@ -1,14 +1,14 @@
 /* /////////////////////////////////////////////////////////////////////////
  * File:        inetstl/shims/access/string/std/in_addr.hpp
  *
- * Purpose:     .
+ * Purpose:     String access shims for Internet types
  *
- * Created:
- * Updated:     22nd September 2008
+ * Created:     21st October 2006
+ * Updated:     1st May 2009
  *
  * Home:        http://stlsoft.org/
  *
- * Copyright (c) 2006-2007, Matthew Wilson and Synesis Software
+ * Copyright (c) 2006-2009, Matthew Wilson and Synesis Software
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -51,8 +51,8 @@
 #ifndef STLSOFT_DOCUMENTATION_SKIP_SECTION
 # define INETSTL_VER_INETSTL_SHIMS_ACCESS_STRING_STD_HPP_IN_ADDR_MAJOR      1
 # define INETSTL_VER_INETSTL_SHIMS_ACCESS_STRING_STD_HPP_IN_ADDR_MINOR      0
-# define INETSTL_VER_INETSTL_SHIMS_ACCESS_STRING_STD_HPP_IN_ADDR_REVISION   3
-# define INETSTL_VER_INETSTL_SHIMS_ACCESS_STRING_STD_HPP_IN_ADDR_EDIT       6
+# define INETSTL_VER_INETSTL_SHIMS_ACCESS_STRING_STD_HPP_IN_ADDR_REVISION   4
+# define INETSTL_VER_INETSTL_SHIMS_ACCESS_STRING_STD_HPP_IN_ADDR_EDIT       7
 #endif /* !STLSOFT_DOCUMENTATION_SKIP_SECTION */
 
 /* /////////////////////////////////////////////////////////////////////////
@@ -68,6 +68,9 @@
 #ifndef STLSOFT_INCL_STLSOFT_STRING_HPP_SHIM_STRING
 # include <stlsoft/string/shim_string.hpp>
 #endif /* !STLSOFT_INCL_STLSOFT_STRING_HPP_SHIM_STRING */
+#ifndef STLSOFT_INCL_STLSOFT_INTERNAL_H_SAFESTR
+# include <stlsoft/internal/safestr.h>
+#endif /* !STLSOFT_INCL_STLSOFT_INTERNAL_H_SAFESTR */
 
 /* /////////////////////////////////////////////////////////////////////////
  * Namespace
@@ -97,13 +100,17 @@ namespace inetstl_project
 
 inline stlsoft::basic_shim_string<is_char_a_t, 16> c_str_data_a(struct in_addr const& addr)
 {
-    stlsoft::basic_shim_string<is_char_a_t, 16>    s(15);
+    stlsoft::basic_shim_string<is_char_a_t, 16>     s(15);
 
     unsigned    b0  =   (addr.s_addr & 0x000000ff) >> 0;
     unsigned    b1  =   (addr.s_addr & 0x0000ff00) >> 8;
     unsigned    b2  =   (addr.s_addr & 0x00ff0000) >> 16;
     unsigned    b3  =   (addr.s_addr & 0xff000000) >> 24;
+# ifdef STLSOFT_USING_SAFE_STR_FUNCTIONS
+    int         cch =   ::_snprintf_s(s.data(), s.size() + 1u, _TRUNCATE, "%u.%u.%u.%u", b0, b1, b2, b3);
+# else /* ? STLSOFT_USING_SAFE_STR_FUNCTIONS */
     int         cch =   ::sprintf(s.data(), "%u.%u.%u.%u", b0, b1, b2, b3);
+# endif /* STLSOFT_USING_SAFE_STR_FUNCTIONS */
 
     if(cch < 0)
     {

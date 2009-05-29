@@ -5,7 +5,7 @@
  *              Unicode specialisations thereof.
  *
  * Created:     30th April 1999
- * Updated:     1st February 2009
+ * Updated:     1st May 2009
  *
  * Home:        http://stlsoft.org/
  *
@@ -52,8 +52,8 @@
 #ifndef STLSOFT_DOCUMENTATION_SKIP_SECTION
 # define INETSTL_VER_INETSTL_FILESYSTEM_HPP_FILESYSTEM_TRAITS_MAJOR    4
 # define INETSTL_VER_INETSTL_FILESYSTEM_HPP_FILESYSTEM_TRAITS_MINOR    1
-# define INETSTL_VER_INETSTL_FILESYSTEM_HPP_FILESYSTEM_TRAITS_REVISION 1
-# define INETSTL_VER_INETSTL_FILESYSTEM_HPP_FILESYSTEM_TRAITS_EDIT     71
+# define INETSTL_VER_INETSTL_FILESYSTEM_HPP_FILESYSTEM_TRAITS_REVISION 2
+# define INETSTL_VER_INETSTL_FILESYSTEM_HPP_FILESYSTEM_TRAITS_EDIT     72
 #endif /* !STLSOFT_DOCUMENTATION_SKIP_SECTION */
 
 /* /////////////////////////////////////////////////////////////////////////
@@ -63,6 +63,9 @@
 #ifndef INETSTL_INCL_INETSTL_H_INETSTL
 # include <inetstl/inetstl.h>
 #endif /* !INETSTL_INCL_INETSTL_H_INETSTL */
+#ifndef INETSTL_OS_IS_WINDOWS
+# error This file is currently compatible only with the Win32/Win64 API
+#endif /* !INETSTL_OS_IS_WINDOWS */
 #ifndef STLSOFT_INCL_STLSOFT_CONVERSION_HPP_SAP_CAST
 # include <stlsoft/conversion/sap_cast.hpp>
 #endif /* !STLSOFT_INCL_STLSOFT_CONVERSION_HPP_SAP_CAST */

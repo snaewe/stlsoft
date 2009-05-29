@@ -4,11 +4,11 @@
  * Purpose:     Contains the internet_exception class.
  *
  * Created:     25th April 2004
- * Updated:     22nd March 2007
+ * Updated:     1st May 2009
  *
  * Home:        http://stlsoft.org/
  *
- * Copyright (c) 2004-2007, Matthew Wilson and Synesis Software
+ * Copyright (c) 2004-2009, Matthew Wilson and Synesis Software
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -51,9 +51,9 @@
 
 #ifndef STLSOFT_DOCUMENTATION_SKIP_SECTION
 # define INETSTL_VER_INETSTL_ERROR_HPP_EXCEPTIONS_MAJOR     4
-# define INETSTL_VER_INETSTL_ERROR_HPP_EXCEPTIONS_MINOR     1
-# define INETSTL_VER_INETSTL_ERROR_HPP_EXCEPTIONS_REVISION  3
-# define INETSTL_VER_INETSTL_ERROR_HPP_EXCEPTIONS_EDIT      40
+# define INETSTL_VER_INETSTL_ERROR_HPP_EXCEPTIONS_MINOR     2
+# define INETSTL_VER_INETSTL_ERROR_HPP_EXCEPTIONS_REVISION  1
+# define INETSTL_VER_INETSTL_ERROR_HPP_EXCEPTIONS_EDIT      41
 #endif /* !STLSOFT_DOCUMENTATION_SKIP_SECTION */
 
 /* /////////////////////////////////////////////////////////////////////////
@@ -77,6 +77,10 @@
 #ifndef STLSOFT_INCL_STLSOFT_UTIL_HPP_EXCEPTION_STRING
 # include <stlsoft/util/exception_string.hpp>
 #endif /* !STLSOFT_INCL_STLSOFT_UTIL_HPP_EXCEPTION_STRING */
+
+#ifndef INETSTL_OS_IS_WINDOWS
+# include <errno.h>
+#endif /* !INETSTL_OS_IS_WINDOWS */
 
 #ifndef STLSOFT_CF_EXCEPTION_SUPPORT
 # error This file cannot be included when exception-handling is not supported
@@ -122,7 +126,11 @@ protected:
     typedef stlsoft_ns_qual(exception_string)   string_type;
 public:
     typedef os_exception                        parent_class_type;
+#ifdef INETSTL_OS_IS_WINDOWS
     typedef is_dword_t                          error_code_type;
+#else /* ? INETSTL_OS_IS_WINDOWS */
+    typedef int                                 error_code_type;
+#endif /* INETSTL_OS_IS_WINDOWS */
     typedef internet_exception                  class_type;
 /// @}
 
@@ -167,7 +175,7 @@ public:
         }
         else
         {
-            return "Internet failure";
+            return "internet failure";
         }
     }
 
@@ -197,6 +205,7 @@ public:
 private:
     static string_type create_reason_(char const* reason, error_code_type err)
     {
+#ifdef INETSTL_OS_IS_WINDOWS
         if( err == static_cast<error_code_type>(E_OUTOFMEMORY) ||
             err == static_cast<error_code_type>(ERROR_OUTOFMEMORY) ||
             NULL == reason ||
@@ -205,6 +214,7 @@ private:
             return string_type();
         }
         else
+#endif /* INETSTL_OS_IS_WINDOWS */
         {
             return string_type(reason);
         }
@@ -251,7 +261,11 @@ public:
     /// Function call operator, taking no parameters
     void operator ()() const
     {
+#ifdef INETSTL_OS_IS_WINDOWS
         STLSOFT_THROW_X(thrown_type(::GetLastError()));
+#else /* ? INETSTL_OS_IS_WINDOWS */
+        STLSOFT_THROW_X(thrown_type(errno));
+#endif /* INETSTL_OS_IS_WINDOWS */
     }
     /// Function call operator, taking one parameter
     void operator ()(error_code_type err) const

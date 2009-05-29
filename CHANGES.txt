@@ -2,7 +2,7 @@
 STLSoft - Changes
 
 ; Created:  29th March 2002
-; Updated:  27th April 2009
+; Updated:  2nd May 2009
 
 ============================================================================
 
@@ -16,10 +16,39 @@ STLSoft - Changes
    *                                    *
    **************************************
 
+============================================================================
+
+Changes for 1.9.79 (2nd May 2009)
+
+Summary:
+========
+
+ * UNIX compatibility for InetSTL
+ * "safe string" library compatibility for InetSTL
+
+Changes:
+========
+
+ InetSTL:
+ ========
+
+ ~ include/inetstl/inetstl.h:
+ ~ include/inetstl/error/exceptions.hpp:
+ ~ include/inetstl/filesystem/filesystem_traits.hpp:
+ ~ include/inetstl/filesystem/findfile_sequence.hpp:
+ ~ include/inetstl/filesystem/ftpdir_sequence.hpp:
+ ~ include/inetstl/filesystem/functionals.hpp:
+ ~ include/inetstl/filesystem/searchspec_sequence.hpp:
+ ~ include/inetstl/network/connection.hpp:
+ ~ include/inetstl/network/session.hpp:
+    ~ UNIX compatibility
+
+ ~ include/inetstl/shims/access/string/std/in_addr.hpp:
+    ~ compatibility with "safe string" library
 
 ============================================================================
 
-Changes for 1.9.78 (27th March 2009)
+Changes for 1.9.78 (27th April 2009)
 
 Summary:
 ========
