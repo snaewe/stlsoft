@@ -6,11 +6,11 @@
  *              problems.
  *
  * Created:     11th November 2002
- * Updated:     10th October 2008
+ * Updated:     9th March 2009
  *
  * Home:        http://stlsoft.org/
  *
- * Copyright (c) 2002-2007, Matthew Wilson and Synesis Software
+ * Copyright (c) 2002-2009, Matthew Wilson and Synesis Software
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -53,8 +53,8 @@
 #ifndef STLSOFT_DOCUMENTATION_SKIP_SECTION
 # define STLSOFT_VER_STLSOFT_COLLECTIONS_HPP_ARRAY_PROXY_MAJOR    4
 # define STLSOFT_VER_STLSOFT_COLLECTIONS_HPP_ARRAY_PROXY_MINOR    0
-# define STLSOFT_VER_STLSOFT_COLLECTIONS_HPP_ARRAY_PROXY_REVISION 3
-# define STLSOFT_VER_STLSOFT_COLLECTIONS_HPP_ARRAY_PROXY_EDIT     55
+# define STLSOFT_VER_STLSOFT_COLLECTIONS_HPP_ARRAY_PROXY_REVISION 4
+# define STLSOFT_VER_STLSOFT_COLLECTIONS_HPP_ARRAY_PROXY_EDIT     56
 #endif /* !STLSOFT_DOCUMENTATION_SKIP_SECTION */
 
 /* /////////////////////////////////////////////////////////////////////////
@@ -88,6 +88,9 @@ namespace stlsoft
  * have safe access to both array pointer and length
  *
  * \ingroup group__library__collections
+ *
+ * \note This is described in detail in section 14.4 of
+ *  <a href = "http://www.imperfectcplusplus.com/">Imperfect C++</a>.
  */
 template <ss_typename_param_k T>
 class array_proxy

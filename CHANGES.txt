@@ -2,7 +2,7 @@
 STLSoft - Changes
 
 ; Created:  29th March 2002
-; Updated:  6th March 2009
+; Updated:  9th March 2009
 
 ============================================================================
 
@@ -16,6 +16,31 @@ STLSoft - Changes
    *                                    *
    **************************************
 
+
+============================================================================
+
+Changes for 1.9.77 (9th March 2009)
+
+Summary:
+========
+
+ * corrected invalid invariants in memory_mapped_file classes in UNIXSTL and
+   WinSTL
+
+Changes:
+========
+
+ UNIXSTL:
+ ========
+
+ ~ include/unixstl/filesystem/memory_mapped_file.hpp:
+    ~ fixed invalid invariant
+
+ WinSTL:
+ =======
+
+ ~ include/winstl/filesystem/memory_mapped_file.hpp:
+    ~ fixed invalid invariant
 
 ============================================================================
 
@@ -432,8 +457,8 @@ Changes:
 
  ~ include/comstl/shims/access/string/variant.hpp:
     ~ fixed defect seen with Borland, whereby conversion to multibyte string
-	  in c_str_VARIANT_proxy_a's implicit conversion operator was not
-	  carried out
+      in c_str_VARIANT_proxy_a's implicit conversion operator was not
+      carried out
 
 ============================================================================
 
@@ -456,7 +481,7 @@ Changes:
 
  ~ stlsoft/string/simple_string.hpp:
     ~ optimised reserve() method so that it now does not alloc new buffer if
-	  requested size is less than current capacity
+      requested size is less than current capacity
 
 ============================================================================
 

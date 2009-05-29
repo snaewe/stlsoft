@@ -2,9 +2,16 @@
 STLSoft - History
 
 ; Created:  29th March 2002
-; Updated:  6th March 2009
+; Updated:  9th March 2009
 
 ============================================================================
+
+
+9th March 2009 - 1.9.77 released
+--------------------------------
+
+ * corrected invalid invariants in memory_mapped_file classes in UNIXSTL and
+   WinSTL
 
 
 6th March 2009 - 1.9.76 released

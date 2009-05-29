@@ -4,7 +4,7 @@
  * Purpose:     Memory mapped file class.
  *
  * Created:     15th December 1996
- * Updated:     6th March 2009
+ * Updated:     9th March 2009
  *
  * Thanks:      To Pablo Aguilar for requesting multibyte / wide string
  *              ambivalence. To Joe Mariadassou for requesting swap().
@@ -53,8 +53,8 @@
 #ifndef STLSOFT_DOCUMENTATION_SKIP_SECTION
 # define WINSTL_VER_WINSTL_FILESYSTEM_HPP_MEMORY_MAPPED_FILE_MAJOR     4
 # define WINSTL_VER_WINSTL_FILESYSTEM_HPP_MEMORY_MAPPED_FILE_MINOR     6
-# define WINSTL_VER_WINSTL_FILESYSTEM_HPP_MEMORY_MAPPED_FILE_REVISION  1
-# define WINSTL_VER_WINSTL_FILESYSTEM_HPP_MEMORY_MAPPED_FILE_EDIT      83
+# define WINSTL_VER_WINSTL_FILESYSTEM_HPP_MEMORY_MAPPED_FILE_REVISION  2
+# define WINSTL_VER_WINSTL_FILESYSTEM_HPP_MEMORY_MAPPED_FILE_EDIT      84
 #endif /* !STLSOFT_DOCUMENTATION_SKIP_SECTION */
 
 /* /////////////////////////////////////////////////////////////////////////
@@ -455,7 +455,7 @@ private:
     bool_type is_valid() const
     {
 #ifdef STLSOFT_CF_EXCEPTION_SUPPORT
-        if((NULL != m_memory) != (0 == m_cb))
+        if((NULL != m_memory) != (0 != m_cb))
         {
             return false;
         }
