@@ -4,7 +4,7 @@
  * Purpose:     basic_simple_string class template.
  *
  * Created:     19th March 1993
- * Updated:     13th February 2009
+ * Updated:     6th May 2009
  *
  * Home:        http://stlsoft.org/
  *
@@ -51,8 +51,8 @@
 #ifndef STLSOFT_DOCUMENTATION_SKIP_SECTION
 # define STLSOFT_VER_STLSOFT_STRING_HPP_SIMPLE_STRING_MAJOR    4
 # define STLSOFT_VER_STLSOFT_STRING_HPP_SIMPLE_STRING_MINOR    1
-# define STLSOFT_VER_STLSOFT_STRING_HPP_SIMPLE_STRING_REVISION 3
-# define STLSOFT_VER_STLSOFT_STRING_HPP_SIMPLE_STRING_EDIT     244
+# define STLSOFT_VER_STLSOFT_STRING_HPP_SIMPLE_STRING_REVISION 4
+# define STLSOFT_VER_STLSOFT_STRING_HPP_SIMPLE_STRING_EDIT     245
 #endif /* !STLSOFT_DOCUMENTATION_SKIP_SECTION */
 
 /* /////////////////////////////////////////////////////////////////////////
@@ -167,7 +167,7 @@ template<   ss_typename_param_k C
 class basic_simple_string
     : public stl_collection_tag
 {
-/// \name Types
+/// \name Member Types
 /// @{
 public:
     /// The value type
@@ -655,7 +655,7 @@ private:
     {
         buffer_type_    buffer(static_cast<ss_size_t>(stlsoft_ns_qual_std(distance)(first, last)));
 
-        stlsoft_ns_qual_std(copy)(first, last, &buffer[0]);
+        std_copy(first, last, &buffer[0]);
         append(buffer.data(), buffer.size());
 
         STLSOFT_ASSERT(is_valid());
@@ -1796,13 +1796,13 @@ inline ss_sint_t basic_simple_string<C, T, A>::compare( ss_typename_type_k basic
                                                     ,   ss_typename_type_k basic_simple_string<C, T, A>::size_type          posRhs
                                                     ,   ss_typename_type_k basic_simple_string<C, T, A>::size_type          cchRhs) const
 {
-    size_type   lhs_len =   length();
+    size_type lhs_len = length();
 
-    if(!(pos < lhs_len))
+    if(pos == lhs_len)
     {
-        pos = lhs_len;
+        lhs_len = 0u;
     }
-    else
+    else if(pos + cch > lhs_len)
     {
         lhs_len -= pos;
     }
@@ -1812,13 +1812,13 @@ inline ss_sint_t basic_simple_string<C, T, A>::compare( ss_typename_type_k basic
         lhs_len = cch;
     }
 
-    size_type   rhs_len =   rhs.length();
+    size_type rhs_len = rhs.length();
 
-    if(!(posRhs < rhs_len))
+    if(posRhs == rhs_len)
     {
-        posRhs = rhs_len;
+        rhs_len = 0u;
     }
-    else
+    else if(posRhs + cchRhs > rhs_len)
     {
         rhs_len -= posRhs;
     }
@@ -1926,7 +1926,7 @@ inline ss_typename_type_ret_k basic_simple_string<C, T, A>::const_reference basi
 {
     STLSOFT_ASSERT(is_valid());
 
-    if(index > size())
+    if(index >= size())
     {
         STLSOFT_THROW_X(stlsoft_ns_qual_std(out_of_range)("index out of range"));
     }
@@ -2413,7 +2413,11 @@ inline ss_typename_type_ret_k basic_simple_string<C, T, A>::class_type& basic_si
 
     if(len < pos)
     {
+#ifdef STLSOFT_CF_EXCEPTION_SUPPORT
+        STLSOFT_THROW_X(stlsoft_ns_qual_std(out_of_range)("index out of range"));
+#else /* ? STLSOFT_CF_EXCEPTION_SUPPORT */
         pos = len;
+#endif /* STLSOFT_CF_EXCEPTION_SUPPORT */
     }
 
     if(len - pos < cch)
@@ -2473,7 +2477,7 @@ template<   ss_typename_param_k C
 inline ss_typename_type_ret_k basic_simple_string<C, T, A>::class_type& basic_simple_string<C, T, A>::append(   ss_typename_type_k basic_simple_string<C, T, A>::const_iterator first
                                                                                                         ,   ss_typename_type_k basic_simple_string<C, T, A>::const_iterator last)
 {
-    // We have to use this strange appearing this, because of Visual C++ .NET's
+    // We have to use this strange appearing code because of Visual C++ .NET's
     // disgusting STL swill. Sigh!
     return append(&(*first), last - first);
 }

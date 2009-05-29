@@ -4,11 +4,11 @@
  * Purpose:     Intra-process mutext, based on PTHREADS.
  *
  * Created:     15th May 2002
- * Updated:     9th March 2008
+ * Updated:     6th May 2009
  *
  * Home:        http://stlsoft.org/
  *
- * Copyright (c) 2002-2008, Matthew Wilson and Synesis Software
+ * Copyright (c) 2002-2009, Matthew Wilson and Synesis Software
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -50,8 +50,8 @@
 #ifndef STLSOFT_DOCUMENTATION_SKIP_SECTION
 # define UNIXSTL_VER_UNIXSTL_SYNCH_HPP_PROCESS_MUTEX_MAJOR      4
 # define UNIXSTL_VER_UNIXSTL_SYNCH_HPP_PROCESS_MUTEX_MINOR      6
-# define UNIXSTL_VER_UNIXSTL_SYNCH_HPP_PROCESS_MUTEX_REVISION   2
-# define UNIXSTL_VER_UNIXSTL_SYNCH_HPP_PROCESS_MUTEX_EDIT       71
+# define UNIXSTL_VER_UNIXSTL_SYNCH_HPP_PROCESS_MUTEX_REVISION   3
+# define UNIXSTL_VER_UNIXSTL_SYNCH_HPP_PROCESS_MUTEX_EDIT       72
 #endif /* !STLSOFT_DOCUMENTATION_SKIP_SECTION */
 
 /* /////////////////////////////////////////////////////////////////////////
@@ -298,6 +298,12 @@ public:
 /// \name Implementation
 /// @{
 private:
+#if defined(STLSOFT_COMPILER_IS_SUNPRO)
+    static int pthread_mutexattr_destroy(pthread_mutexattr_t *attr)
+    {
+        return ::pthread_mutexattr_destroy(attr);
+    }
+#endif /* compiler */
     static int create_(pthread_mutex_t* mx, int pshared, bool_type bRecursive)
     {
         pthread_mutexattr_t attr;
@@ -305,7 +311,7 @@ private:
 
         if(0 == (res = ::pthread_mutexattr_init(&attr)))
         {
-            stlsoft::scoped_handle<pthread_mutexattr_t*>    attr_(&attr, ::pthread_mutexattr_destroy);
+            stlsoft::scoped_handle<pthread_mutexattr_t*>    attr_(&attr, pthread_mutexattr_destroy);
 
             if( !bRecursive ||
                 0 == (res = ::pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE)))

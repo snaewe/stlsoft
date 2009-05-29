@@ -2,9 +2,21 @@
 STLSoft - History
 
 ; Created:  29th March 2002
-; Updated:  2nd May 2009
+; Updated:  6th May 2009
 
 ============================================================================
+
+
+6th May 2009 - 1.9.80 released
+------------------------------
+
+ * now recognises support for variadic macros and #pragma once for later versions of Borland C/C++
+ * SunPro compatibility improvements for UNIXSTL synchronisation components
+ * fixes to defects in stlsoft::basic_simple_string at() and 5-parameter compare() methods
+ * basic_path class templates (both UNIXSTL and WinSTL versions) now implement assignment operator differently to avoid possibilities of infinite loops (which can happen when a type with an opposing string encoding is used)
+ * correction to stlsoft::auto_buffer to ensure allocators are involved in swap() operations
+ * correction to struct in_addr string access shims for compatibility with big-endian architectures
+ * various changes for compatibility with "safe string" library
 
 
 2nd May 2009 - 1.9.79 released

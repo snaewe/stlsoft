@@ -282,7 +282,7 @@ public:
 #if 0 && !defined(STLSOFT_DOCUMENTATION_SKIP_SECTION)
     void reset()
     {
-		close();
+        close();
     }
 #endif /* !STLSOFT_DOCUMENTATION_SKIP_SECTION */
 

@@ -4,11 +4,11 @@
  * Purpose:     Compiler feature discrimination for Borland C/C++.
  *
  * Created:     7th February 2003
- * Updated:     11th May 2008
+ * Updated:     6th May 2009
  *
  * Home:        http://stlsoft.org/
  *
- * Copyright (c) 2003-2008, Matthew Wilson and Synesis Software
+ * Copyright (c) 2003-2009, Matthew Wilson and Synesis Software
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -57,8 +57,8 @@
 #ifndef STLSOFT_DOCUMENTATION_SKIP_SECTION
 # define STLSOFT_VER_H_STLSOFT_CCCAP_BORLAND_MAJOR      3
 # define STLSOFT_VER_H_STLSOFT_CCCAP_BORLAND_MINOR      17
-# define STLSOFT_VER_H_STLSOFT_CCCAP_BORLAND_REVISION   1
-# define STLSOFT_VER_H_STLSOFT_CCCAP_BORLAND_EDIT       77
+# define STLSOFT_VER_H_STLSOFT_CCCAP_BORLAND_REVISION   2
+# define STLSOFT_VER_H_STLSOFT_CCCAP_BORLAND_EDIT       78
 #endif /* !STLSOFT_DOCUMENTATION_SKIP_SECTION */
 
 /* /////////////////////////////////////////////////////////////////////////
@@ -82,7 +82,9 @@
 /* Support for #pragma once
  */
 
-/* #define STLSOFT_CF_PRAGMA_ONCE_SUPPORT */
+#if (__BORLANDC__ & 0xfff0) >= 0x0580
+# define STLSOFT_CF_PRAGMA_ONCE_SUPPORT
+#endif /* __BORLANDC__ */
 
 /* Variadic Macros
  */
@@ -95,7 +97,9 @@
 /* Variadic Macros
  */
 
-/* #define STLSOFT_CF_SUPPORTS_VARIADIC_MACROS */
+#if (__BORLANDC__ & 0xfff0) >= 0x0580
+# define STLSOFT_CF_SUPPORTS_VARIADIC_MACROS
+#endif /* __BORLANDC__ */
 
 /* Types:
  */

@@ -4,7 +4,7 @@
  * Purpose:     Simple class that represents a path.
  *
  * Created:     1st May 1993
- * Updated:     25th February 2009
+ * Updated:     6th May 2009
  *
  * Home:        http://stlsoft.org/
  *
@@ -50,8 +50,8 @@
 #ifndef STLSOFT_DOCUMENTATION_SKIP_SECTION
 # define WINSTL_VER_WINSTL_FILESYSTEM_HPP_PATH_MAJOR    6
 # define WINSTL_VER_WINSTL_FILESYSTEM_HPP_PATH_MINOR    6
-# define WINSTL_VER_WINSTL_FILESYSTEM_HPP_PATH_REVISION 13
-# define WINSTL_VER_WINSTL_FILESYSTEM_HPP_PATH_EDIT     249
+# define WINSTL_VER_WINSTL_FILESYSTEM_HPP_PATH_REVISION 14
+# define WINSTL_VER_WINSTL_FILESYSTEM_HPP_PATH_EDIT     250
 #endif /* !STLSOFT_DOCUMENTATION_SKIP_SECTION */
 
 /* /////////////////////////////////////////////////////////////////////////
@@ -253,7 +253,7 @@ public:
     template<ss_typename_param_k S>
     class_type& operator =(S const& s)
     {
-        return operator =(stlsoft_ns_qual(c_str_ptr)(s));
+        return operator_equal_(stlsoft_ns_qual(c_str_ptr)(s));
     }
 #endif /* STLSOFT_CF_MEMBER_TEMPLATE_FUNCTION_SUPPORT */
 
@@ -427,6 +427,8 @@ public:
 
 // Implementation
 private:
+    class_type&             operator_equal_(char_type const* path);
+
     class_type&             push_(char_type const* rhs, size_type cch, bool_type bAddPathNameSeparator);
     class_type&             push_sep_(char_type sep);
     void                    swap(class_type& rhs);
@@ -1091,7 +1093,7 @@ template<   ss_typename_param_k C
 inline basic_path<C, T, A>::basic_path(basic_path<C, T, A> const& rhs)
     : m_len(rhs.m_len)
 {
-    ::memcpy(&m_buffer[0], rhs.m_buffer.data(), sizeof(char_type) * m_len);
+    traits_type::char_copy(&m_buffer[0], rhs.m_buffer.c_str(), rhs.m_len + 1); // +1 to get the NUL terminator
 }
 #endif /* !STLSOFT_CF_NO_COPY_CTOR_AND_COPY_CTOR_TEMPLATE_OVERLOAD */
 
@@ -1115,6 +1117,15 @@ template<   ss_typename_param_k C
         ,   ss_typename_param_k A
         >
 inline basic_path<C, T, A>& basic_path<C, T, A>::operator =(ss_typename_type_k basic_path<C, T, A>::char_type const* path)
+{
+    return operator_equal_(path);
+}
+
+template<   ss_typename_param_k C
+        ,   ss_typename_param_k T
+        ,   ss_typename_param_k A
+        >
+inline basic_path<C, T, A>& basic_path<C, T, A>::operator_equal_(ss_typename_type_k basic_path<C, T, A>::char_type const* path)
 {
     class_type  newPath(path);
 

@@ -4,11 +4,14 @@
  * Purpose:     Contains the auto_buffer template class.
  *
  * Created:     19th January 2002
- * Updated:     10th October 2008
+ * Updated:     3rd May 2009
+ *
+ * Thanks:      To Thorsten Ottosen for pointing out that allocators were
+ *              not swapped.
  *
  * Home:        http://stlsoft.org/
  *
- * Copyright (c) 2002-2008, Matthew Wilson and Synesis Software
+ * Copyright (c) 2002-2009, Matthew Wilson and Synesis Software
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -50,8 +53,8 @@
 #ifndef STLSOFT_DOCUMENTATION_SKIP_SECTION
 # define STLSOFT_VER_STLSOFT_MEMORY_HPP_AUTO_BUFFER_MAJOR       5
 # define STLSOFT_VER_STLSOFT_MEMORY_HPP_AUTO_BUFFER_MINOR       2
-# define STLSOFT_VER_STLSOFT_MEMORY_HPP_AUTO_BUFFER_REVISION    2
-# define STLSOFT_VER_STLSOFT_MEMORY_HPP_AUTO_BUFFER_EDIT        159
+# define STLSOFT_VER_STLSOFT_MEMORY_HPP_AUTO_BUFFER_REVISION    3
+# define STLSOFT_VER_STLSOFT_MEMORY_HPP_AUTO_BUFFER_EDIT        160
 #endif /* !STLSOFT_DOCUMENTATION_SKIP_SECTION */
 
 /* /////////////////////////////////////////////////////////////////////////
@@ -780,6 +783,17 @@ public:
     {
         STLSOFT_ASSERT(is_valid());
 
+        // Swap:
+        //
+        // 1. Allocator
+        // 2. Member variables
+
+        // 1. Allocator
+#if !defined(STLSOFT_CF_ALLOCATOR_BASE_EXPENSIVE)
+        std_swap(static_cast<allocator_type&>(*this), static_cast<allocator_type&>(rhs));
+#endif /* !STLSOFT_CF_ALLOCATOR_BASE_EXPENSIVE */
+
+        // 2. Member variables
         if( is_in_external_array_() &&
             rhs.is_in_external_array_())
         {

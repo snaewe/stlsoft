@@ -2,7 +2,7 @@
 STLSoft - Changes
 
 ; Created:  29th March 2002
-; Updated:  2nd May 2009
+; Updated:  6th May 2009
 
 ============================================================================
 
@@ -15,6 +15,74 @@ STLSoft - Changes
    *   *  means a general bullet-point  *
    *                                    *
    **************************************
+
+============================================================================
+
+Changes for 1.9.80 (6th May 2009)
+
+Summary:
+========
+
+ * now recognises support for variadic macros and #pragma once for later versions of Borland C/C++
+ * SunPro compatibility improvements for UNIXSTL synchronisation components
+ * fixes to defects in stlsoft::basic_simple_string at() and 5-parameter compare() methods
+ * basic_path class templates (both UNIXSTL and WinSTL versions) now implement assignment operator differently to avoid possibilities of infinite loops (which can happen when a type with an opposing string encoding is used)
+ * correction to stlsoft::auto_buffer to ensure allocators are involved in swap() operations
+ * correction to struct in_addr string access shims for compatibility with big-endian architectures
+ * various changes for compatibility with "safe string" library
+
+Changes:
+========
+
+ STLSoft:
+ ========
+
+ ~ include/stlsoft/algorithms/std/alt.hpp:
+    ~ "safe string" library compatibility (via a workaround that just ignores it wrt std::find())
+
+ ~ include/stlsoft/internal/cccap/borland.h:
+    ~ STLSOFT_CF_PRAGMA_ONCE_SUPPORT support
+    ~ STLSOFT_CF_SUPPORTS_VARIADIC_MACROS support
+
+ ~ include/stlsoft/iterators/null_output_iterator.hpp:
+    ~ suppression of compiler warning
+
+ ~ include/stlsoft/memory/auto_buffer.hpp:
+    ~ now swaps allocators
+
+ ~ include/stlsoft/string/simple_string.hpp:
+    ~ more "safe string" compatibility
+    ~ fixed defective 5-parameter compare() method
+    ~ fixed defect in non-mutating version of at(), whereby specifying the index == length did not throw, but returned a reference to the terminating nul character (which is what the subscript operator should do (and does do))
+
+ ~ include/stlsoft/string/split_functions.hpp:
+    ~ trivial formatting change
+
+ InetSTL:
+ ========
+
+ ~ include/inetstl/shims/access/string/std/in_addr.hpp:
+    ~ use of ntohl(), so compatible with big-endian as well as little
+    ~ compatibility with "safe string" library
+
+ UNIXSTL:
+ ========
+
+ ~ include/unixstl/filesystem/path.hpp:
+    ~ changed implementation of generic operator =() in order to avoid possibilities of infinite loops (which can happen when a type with an opposing string encoding is used)
+    ~ trivial documentation markup changes
+
+ ~ include/unixstl/synch/process_mutex.hpp:
+    ~ SunPro support (partially complete)
+
+ ~ include/unixstl/synch/thread_mutex.hpp:
+    ~ SunPro support (partially complete)
+
+ WinSTL:
+ =======
+
+ ~ include/winstl/filesystem/path.hpp:
+    ~ changed implementation of generic operator =() in order to avoid possibilities of infinite loops (which can happen when a type with an opposing string encoding is used)
 
 ============================================================================
 

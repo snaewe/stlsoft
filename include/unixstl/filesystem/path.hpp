@@ -4,7 +4,7 @@
  * Purpose:     Simple class that represents a path.
  *
  * Created:     1st May 1993
- * Updated:     1st February 2009
+ * Updated:     6th May 2009
  *
  * Home:        http://stlsoft.org/
  *
@@ -50,8 +50,8 @@
 #ifndef STLSOFT_DOCUMENTATION_SKIP_SECTION
 # define UNIXSTL_VER_UNIXSTL_FILESYSTEM_HPP_PATH_MAJOR      6
 # define UNIXSTL_VER_UNIXSTL_FILESYSTEM_HPP_PATH_MINOR      5
-# define UNIXSTL_VER_UNIXSTL_FILESYSTEM_HPP_PATH_REVISION   6
-# define UNIXSTL_VER_UNIXSTL_FILESYSTEM_HPP_PATH_EDIT       229
+# define UNIXSTL_VER_UNIXSTL_FILESYSTEM_HPP_PATH_REVISION   7
+# define UNIXSTL_VER_UNIXSTL_FILESYSTEM_HPP_PATH_EDIT       231
 #endif /* !STLSOFT_DOCUMENTATION_SKIP_SECTION */
 
 /* /////////////////////////////////////////////////////////////////////////
@@ -125,7 +125,7 @@ namespace unixstl_project
  * This class represents a path, and effectively acts as a C-string of its value.
  */
 
-/** \brief Represents a path
+/** Represents a path
  *
  * \ingroup group__library__filesystem
  *
@@ -154,17 +154,17 @@ class basic_path
 /// \name Types
 /// @{
 public:
-    /// \brief The char type
+    /// The char type
     typedef C                           char_type;
-    /// \brief The traits type
+    /// The traits type
     typedef T                           traits_type;
-    /// \brief The allocator type
+    /// The allocator type
     typedef A                           allocator_type;
-    /// \brief The current parameterisation of the type
+    /// The current parameterisation of the type
     typedef basic_path<C, T, A>         class_type;
-    /// \brief The size type
+    /// The size type
     typedef us_size_t                   size_type;
-    /// \brief The Boolean type
+    /// The Boolean type
     typedef us_bool_t                   bool_type;
 
 // TODO: Use the slice string, and provide iterators over the directory parts
@@ -174,12 +174,12 @@ public:
 /// \name Construction
 /// @{
 public:
-    /// \brief Constructs an empty path
+    /// Constructs an empty path
     basic_path();
-    /// \brief Constructs a path from \c path
+    /// Constructs a path from \c path
     ss_explicit_k basic_path(char_type const* path);
 #ifdef STLSOFT_CF_MEMBER_TEMPLATE_CTOR_SUPPORT
-    /// \brief Constructs a path from \c path
+    /// Constructs a path from \c path
     template<ss_typename_param_k S>
     ss_explicit_k basic_path(S const& s)
     {
@@ -189,26 +189,26 @@ public:
         m_buffer[m_len] = '\0';
     }
 #endif /* STLSOFT_CF_MEMBER_TEMPLATE_CTOR_SUPPORT */
-    /// \brief Constructs a path from \c cch characters in \c path
+    /// Constructs a path from \c cch characters in \c path
     basic_path(char_type const* path, size_type cch);
 
 #ifndef STLSOFT_CF_NO_COPY_CTOR_AND_COPY_CTOR_TEMPLATE_OVERLOAD
-    /// \brief Copies the contents of \c rhs
+    /// Copies the contents of \c rhs
     basic_path(class_type const& rhs);
 #endif /* !STLSOFT_CF_NO_COPY_CTOR_AND_COPY_CTOR_TEMPLATE_OVERLOAD */
 
 #ifndef STLSOFT_CF_NO_COPY_CTOR_AND_COPY_CTOR_TEMPLATE_OVERLOAD
-    /// \brief Copies the contents of \c rhs
+    /// Copies the contents of \c rhs
     class_type& operator =(class_type const& rhs);
 #endif /* !STLSOFT_CF_NO_COPY_CTOR_AND_COPY_CTOR_TEMPLATE_OVERLOAD */
-    /// \brief Copies the contents of \c rhs
+    /// Copies the contents of \c rhs
     class_type& operator =(char_type const* rhs);
 #ifdef STLSOFT_CF_MEMBER_TEMPLATE_FUNCTION_SUPPORT
-    /// \brief Copies the contents of \c s
+    /// Copies the contents of \c s
     template<ss_typename_param_k S>
     class_type& operator =(S const& s)
     {
-        return operator =(stlsoft_ns_qual(c_str_ptr)(s));
+        return operator_equal_(stlsoft_ns_qual(c_str_ptr)(s));
     }
 #endif /* STLSOFT_CF_MEMBER_TEMPLATE_FUNCTION_SUPPORT */
 
@@ -227,41 +227,41 @@ public:
 /// \name Operations
 /// @{
 public:
-    /// \brief Appends the contents of \c rhs to the path
+    /// Appends the contents of \c rhs to the path
     class_type& push(class_type const& rhs, bool_type bAddPathNameSeparator = false);
-    /// \brief Appends the contents of \c rhs to the path
+    /// Appends the contents of \c rhs to the path
     class_type& push(char_type const* rhs, bool_type bAddPathNameSeparator = false);
-    /// \brief Appends the contents of \c rhs to the path as an extension
+    /// Appends the contents of \c rhs to the path as an extension
     class_type& push_ext(class_type const& rhs, bool_type bAddPathNameSeparator = false);
-    /// \brief Appends the contents of \c rhs to the path as an extension
+    /// Appends the contents of \c rhs to the path as an extension
     class_type& push_ext(char_type const* rhs, bool_type bAddPathNameSeparator = false);
-    /// \brief Ensures that the path has a trailing path name separator
+    /// Ensures that the path has a trailing path name separator
     class_type& push_sep();
-    /// \brief Pops the last path element from the path
+    /// Pops the last path element from the path
     ///
     /// \note In previous versions, this operation did not remove the
     ///   left-most path component. That behaviour is no longer supported,
     ///   and the method will now leave the path instance empty in that
     ///   case.
     class_type& pop(bool_type bRemoveTrailingPathNameSeparator = true);
-    /// \brief Ensures that the path does not have a trailing path name separator
+    /// Ensures that the path does not have a trailing path name separator
     ///
     /// \note Does not trim the separator character from the root designator
     class_type& pop_sep();
-    /// \brief Removes the extension, if any, from the file component of the path
+    /// Removes the extension, if any, from the file component of the path
     class_type& pop_ext();
 
-    /// \brief Equivalent to push()
+    /// Equivalent to push()
     class_type& operator /=(char_type const* rhs);
 
 #if !defined(STLSOFT_CF_MEMBER_TEMPLATE_FUNCTION_SUPPORT) || \
     defined(STLSOFT_CF_MEMBER_TEMPLATE_OVERLOAD_DISCRIMINATED)
-    /// \brief Equivalent to push()
+    /// Equivalent to push()
     class_type& operator /=(class_type const& rhs);
 #endif /* !STLSOFT_CF_MEMBER_TEMPLATE_FUNCTION_SUPPORT || STLSOFT_CF_MEMBER_TEMPLATE_OVERLOAD_DISCRIMINATED */
 
 #if defined(STLSOFT_CF_MEMBER_TEMPLATE_FUNCTION_SUPPORT)
-    /// \brief Equivalent to push()
+    /// Equivalent to push()
     template <ss_typename_param_k S>
     class_type& operator /=(S const& rhs)
     {
@@ -269,52 +269,52 @@ public:
     }
 #endif /* STLSOFT_CF_MEMBER_TEMPLATE_FUNCTION_SUPPORT */
 
-    /// \brief Removes all content
+    /// Removes all content
     void        clear();
 
-    /// \brief Converts the path to absolute form
+    /// Converts the path to absolute form
     class_type& make_absolute(bool_type bRemoveTrailingPathNameSeparator = true);
-    /// \brief Canonicalises the path, removing all "./" parts and evaluating all "../" parts
+    /// Canonicalises the path, removing all "./" parts and evaluating all "../" parts
     class_type& canonicalise(bool_type bRemoveTrailingPathNameSeparator = true);
 /// @}
 
 /// \name Attributes
 /// @{
 public:
-    /// \brief Returns a pointer to the part of the path after the last path name separator
+    /// Returns a pointer to the part of the path after the last path name separator
     ///
     /// \note If the path represents a directory, the name of the directory will be returned, except
     /// if the path is terminated by the path name separator
     ///
     /// \note If the path contains no path name separator, the full path will be returned
     char_type const* get_file() const;
-    /// \brief Returns a pointer to the extension, or to the empty string if there is no extension
+    /// Returns a pointer to the extension, or to the empty string if there is no extension
     char_type const* get_ext() const;
-    /// \brief Returns the length of the converted path
+    /// Returns the length of the converted path
     size_type       length() const;
-    /// \brief Returns the length of the converted path
+    /// Returns the length of the converted path
     ///
     /// \remarks Equivalent to length()
     size_type       size() const;
-    /// \brief Determines whether the path is empty
+    /// Determines whether the path is empty
     bool_type       empty() const;
-    /// \brief Conversion to a non-mutable (const) pointer to the path
+    /// Conversion to a non-mutable (const) pointer to the path
     char_type const* c_str() const;
-    /// \brief Returns a non-mutable (const) reference to the character at
+    /// Returns a non-mutable (const) reference to the character at
     ///  the given index
     ///
     /// \note The behaviour is undefined if <code>index >= size()</code>.
     char_type const& operator [](size_type index) const;
-    /// \brief Indicates whether the path represents an existing file system entry
+    /// Indicates whether the path represents an existing file system entry
     bool_type       exists() const;
-    /// \brief Indicates whether the path is rooted
+    /// Indicates whether the path is rooted
     bool_type       is_rooted() const;
-    /// \brief Indicates whether the path is absolute
+    /// Indicates whether the path is absolute
     bool_type       is_absolute() const;
-    /// \brief Indicates whether the path has a trailing separator
+    /// Indicates whether the path has a trailing separator
     bool_type       has_sep() const;
 
-    /// \brief Copies the contents into a caller supplied buffer
+    /// Copies the contents into a caller supplied buffer
     ///
     /// \param buffer Pointer to character buffer to receive the contents.
     ///  May be NULL, in which case the method returns size().
@@ -343,6 +343,8 @@ public:
 
 // Implementation
 private:
+    class_type&             operator_equal_(char_type const* path);
+
     void                    swap(class_type& rhs);
     class_type&             concat_(char_type const* rhs);
     class_type&             concat_(class_type const& rhs);
@@ -379,17 +381,17 @@ private:
  * Typedefs for commonly encountered types
  */
 
-/** \brief Specialisation of the basic_path template for the ANSI character type \c char
+/** Specialisation of the basic_path template for the ANSI character type \c char
  *
  * \ingroup group__library__filesystem
  */
 typedef basic_path<us_char_a_t, filesystem_traits<us_char_a_t> >       path_a;
-/** \brief Specialisation of the basic_path template for the Unicode character type \c wchar_t
+/** Specialisation of the basic_path template for the Unicode character type \c wchar_t
  *
  * \ingroup group__library__filesystem
  */
 typedef basic_path<us_char_w_t, filesystem_traits<us_char_w_t> >       path_w;
-/** \brief Specialisation of the basic_path template for the ANSI character type \c char
+/** Specialisation of the basic_path template for the ANSI character type \c char
  *
  * \ingroup group__library__filesystem
  */
@@ -529,7 +531,7 @@ inline us_bool_t operator !=(basic_path<C, T, A> const& lhs, basic_path<C, T, A>
 
 // operator /
 
-/** \brief Concatenates \c rhs to the path \c lhs
+/** Concatenates \c rhs to the path \c lhs
  *
  * \ingroup group__library__filesystem
  */
@@ -542,7 +544,7 @@ inline basic_path<C, T, A> operator /(basic_path<C, T, A> const& lhs, ss_typenam
     return basic_path<C, T, A>(lhs) /= rhs;
 }
 
-/** \brief Concatenates \c rhs to the path \c lhs
+/** Concatenates \c rhs to the path \c lhs
  *
  * \ingroup group__library__filesystem
  */
@@ -555,7 +557,7 @@ inline basic_path<C, T, A> operator /(ss_typename_type_k basic_path<C, T, A>::ch
     return basic_path<C, T, A>(lhs) /= rhs;
 }
 
-/** \brief Concatenates \c rhs to the path \c lhs
+/** Concatenates \c rhs to the path \c lhs
  *
  * \ingroup group__library__filesystem
  */
@@ -576,7 +578,7 @@ inline basic_path<C, T, A> operator /(basic_path<C, T, A> const& lhs, basic_path
 # if !defined(STLSOFT_COMPILER_IS_MSVC) || \
      _MSC_VER >= 1100
 
-/** \brief This helper function makes a path variable without needing to
+/** This helper function makes a path variable without needing to
  * qualify the template parameter.
  *
  * \ingroup group__library__filesystem
@@ -607,7 +609,7 @@ inline void swap(basic_path<C, T, A>& lhs, basic_path<C, T, A>& rhs)
  * Shims
  */
 
-/** \brief \ref group__concept__shim__string_access__c_str_data for unixstl::basic_path
+/** \ref group__concept__shim__string_access__c_str_data for unixstl::basic_path
  *
  * \ingroup group__concept__shim__string_access
  */
@@ -635,7 +637,7 @@ inline us_char_w_t const* c_str_data_w(unixstl_ns_qual(basic_path)<us_char_w_t, 
 
 #endif /* !STLSOFT_DOCUMENTATION_SKIP_SECTION */
 
-/** \brief \ref group__concept__shim__string_access__c_str_len for unixstl::basic_path
+/** \ref group__concept__shim__string_access__c_str_len for unixstl::basic_path
  *
  * \ingroup group__concept__shim__string_access
  */
@@ -665,7 +667,7 @@ inline us_size_t c_str_len_w(unixstl_ns_qual(basic_path)<us_char_w_t, T, A> cons
 
 
 
-/** \brief \ref group__concept__shim__string_access__c_str_ptr for unixstl::basic_path
+/** \ref group__concept__shim__string_access__c_str_ptr for unixstl::basic_path
  *
  * \ingroup group__concept__shim__string_access
  */
@@ -695,7 +697,7 @@ inline us_char_w_t const* c_str_ptr_w(unixstl_ns_qual(basic_path)<us_char_w_t, T
 
 
 
-/** \brief \ref group__concept__shim__string_access__c_str_ptr_null for unixstl::basic_path
+/** \ref group__concept__shim__string_access__c_str_ptr_null for unixstl::basic_path
  *
  * \ingroup group__concept__shim__string_access
  */
@@ -727,7 +729,7 @@ inline us_char_w_t const* c_str_ptr_null_w(unixstl_ns_qual(basic_path)<us_char_w
 
 
 
-/** \brief \ref group__concept__shim__stream_insertion "stream insertion shim" for unixstl::basic_path
+/** \ref group__concept__shim__stream_insertion "stream insertion shim" for unixstl::basic_path
  *
  * \ingroup group__concept__shim__stream_insertion
  */
@@ -917,6 +919,15 @@ template<   ss_typename_param_k C
         ,   ss_typename_param_k A
         >
 inline basic_path<C, T, A>& basic_path<C, T, A>::operator =(ss_typename_type_k basic_path<C, T, A>::char_type const* path)
+{
+    return operator_equal_(path);
+}
+
+template<   ss_typename_param_k C
+        ,   ss_typename_param_k T
+        ,   ss_typename_param_k A
+        >
+inline basic_path<C, T, A>& basic_path<C, T, A>::operator_equal_(ss_typename_type_k basic_path<C, T, A>::char_type const* path)
 {
     class_type  newPath(path);
 
